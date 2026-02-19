@@ -1,0 +1,24 @@
+{
+  "name": "create-reffo-beacon",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "CLI installer for Reffo Beacon — scaffold a self-hosted beacon server",
+  "bin": {
+    "create-reffo-beacon": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "reffo",
+    "beacon",
+    "decentralized",
+    "commerce",
+    "cli",
+    "create"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
