@@ -11,7 +11,14 @@ export async function install(answers) {
   const dir = answers.directory.startsWith('~')
     ? answers.directory.replace(/^~/, os.homedir())
     : answers.directory;
-  const targetDir = path.resolve(process.cwd(), dir);
+  // Use cwd for relative paths; fall back to homedir if cwd is gone
+  let cwd;
+  try {
+    cwd = process.cwd();
+  } catch {
+    cwd = os.homedir();
+  }
+  const targetDir = path.resolve(cwd, dir);
   // Resolve path to the reffo-beacon package (sibling repo)
   const beaconPkgDir = path.resolve(__dirname, '..', '..', 'reffo-beacon');
 

@@ -3,6 +3,17 @@
 import { gatherAnswers } from './prompts.js';
 import { install } from './installer.js';
 
+// Check that the current working directory exists (it won't if the user
+// is cd'd into a directory that was deleted).
+try {
+  process.cwd();
+} catch {
+  console.error('\n  Error: Your current directory no longer exists on disk.');
+  console.error('  This usually happens after a directory was deleted while your terminal was in it.');
+  console.error('  Please run: cd ~ && npx create-reffo-beacon\n');
+  process.exit(1);
+}
+
 console.log('\n  ⚡ create-reffo-beacon v0.1.0\n');
 
 try {
