@@ -39,7 +39,8 @@ export async function install(answers) {
   );
   const envContent = envTemplate
     .replace(/\{\{PORT\}\}/g, String(answers.port))
-    .replace(/\{\{REFFO_API_KEY\}\}/g, answers.apiKey || '');
+    .replace(/\{\{REFFO_API_KEY\}\}/g, answers.apiKey || '')
+    .replace(/\{\{REFFO_API_URL\}\}/g, answers.apiUrl || 'https://reffo.ai');
   fs.writeFileSync(path.join(targetDir, '.env'), envContent);
   console.log('  ✓ Created .env');
 
