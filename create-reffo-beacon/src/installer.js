@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +7,11 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function install(answers) {
-  const targetDir = path.resolve(process.cwd(), answers.directory);
+  // Expand ~ to home directory (path.resolve doesn't do this)
+  const dir = answers.directory.startsWith('~')
+    ? answers.directory.replace(/^~/, os.homedir())
+    : answers.directory;
+  const targetDir = path.resolve(process.cwd(), dir);
   // Resolve path to the reffo-beacon package (sibling repo)
   const beaconPkgDir = path.resolve(__dirname, '..', '..', 'reffo-beacon');
 
@@ -83,7 +88,12 @@ export async function install(answers) {
   // Print summary
   console.log('\n  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  ✓ Reffo Beacon is ready!\n');
-  console.log(`    cd ${answers.directory}`);
+  // Show a user-friendly path (use ~ shorthand if under home dir)
+  const homeDir = os.homedir();
+  const displayDir = targetDir.startsWith(homeDir)
+    ? targetDir.replace(homeDir, '~')
+    : targetDir;
+  console.log(`    cd ${displayDir}`);
 
   const startCmd = answers.packageManager === 'yarn' ? 'yarn start' : answers.packageManager === 'pnpm' ? 'pnpm start' : 'npm start';
   console.log(`    ${startCmd}\n`);
