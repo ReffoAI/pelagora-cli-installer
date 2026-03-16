@@ -19,9 +19,6 @@ export async function install(answers) {
     cwd = os.homedir();
   }
   const targetDir = path.resolve(cwd, dir);
-  // Resolve path to the reffo-beacon package (sibling repo)
-  const beaconPkgDir = path.resolve(__dirname, '..', '..', 'reffo-beacon');
-
   console.log(`\n  Creating beacon in ${targetDir}...\n`);
 
   // Create project directory
@@ -49,13 +46,13 @@ export async function install(answers) {
     name: path.basename(targetDir),
     version: '0.1.0',
     private: true,
-    description: 'Reffo Beacon — self-hosted decentralized commerce node',
+    description: 'Reffo Beacon — self-hosted node for the protocol',
     scripts: {
       start: 'node node_modules/reffo-beacon/dist/index.js',
-      dev: 'npx tsx node_modules/reffo-beacon/src/index.ts',
+      dev: 'node node_modules/reffo-beacon/dist/index.js',
     },
     dependencies: {
-      'reffo-beacon': `file:${beaconPkgDir}`,
+      'reffo-beacon': '^0.1.0',
     },
     engines: {
       node: '>=20.0.0',
