@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import fs from 'node:fs';
+import path from 'node:path';
 import { gatherAnswers } from './prompts.js';
 import { install } from './installer.js';
 
@@ -14,7 +16,20 @@ try {
   process.exit(1);
 }
 
-console.log('\n  ⚡ pelagora-cli-installer v0.1.3\n');
+// Warn if running from inside the installer repo itself
+const cwd = process.cwd();
+if (
+  fs.existsSync(path.join(cwd, 'src', 'installer.js')) &&
+  fs.existsSync(path.join(cwd, 'src', 'prompts.js'))
+) {
+  console.log('\n  ⚠ You are running the installer from inside its own repository.');
+  console.log('  The new project will be created in this directory.');
+  console.log('  Consider running from a different location instead:\n');
+  console.log('    cd ~ && node /path/to/pelagora-cli-installer/src/index.js');
+  console.log('    # or: npx pelagora-cli-installer\n');
+}
+
+console.log('\n  ⚡ pelagora-cli-installer v0.1.4\n');
 
 try {
   const answers = await gatherAnswers();
