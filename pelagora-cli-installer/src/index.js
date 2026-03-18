@@ -14,7 +14,7 @@ try {
   process.exit(1);
 }
 
-console.log('\n  ⚡ pelagora-cli-installer v0.1.1\n');
+console.log('\n  ⚡ pelagora-cli-installer v0.1.3\n');
 
 try {
   const answers = await gatherAnswers();
