@@ -10,11 +10,11 @@ try {
 } catch {
   console.error('\n  Error: Your current directory no longer exists on disk.');
   console.error('  This usually happens after a directory was deleted while your terminal was in it.');
-  console.error('  Please run: cd ~ && npx create-reffo-beacon\n');
+  console.error('  Please run: cd ~ && npx pelagora-cli-installer\n');
   process.exit(1);
 }
 
-console.log('\n  ⚡ create-reffo-beacon v0.1.0\n');
+console.log('\n  ⚡ pelagora-cli-installer v0.1.1\n');
 
 try {
   const answers = await gatherAnswers();
