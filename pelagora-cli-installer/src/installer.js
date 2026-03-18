@@ -46,13 +46,13 @@ export async function install(answers) {
     name: path.basename(targetDir),
     version: '0.1.0',
     private: true,
-    description: 'Reffo Beacon — self-hosted node for the protocol',
+    description: 'Pelagora — self-hosted node for the Pelagora network',
     scripts: {
-      start: 'node node_modules/reffo-beacon/dist/index.js',
-      dev: 'node node_modules/reffo-beacon/dist/index.js',
+      start: 'node node_modules/pelagora/dist/index.js',
+      dev: 'node node_modules/pelagora/dist/index.js',
     },
     dependencies: {
-      'reffo-beacon': '^0.1.0',
+      'pelagora': '^0.1.5',
     },
     engines: {
       node: '>=20.0.0',
@@ -92,7 +92,7 @@ export async function install(answers) {
 
   // Print summary
   console.log('\n  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  ✓ Reffo Beacon is ready!\n');
+  console.log('  ✓ Pelagora node is ready!\n');
   // Show a user-friendly path (use ~ shorthand if under home dir)
   const homeDir = os.homedir();
   const displayDir = targetDir.startsWith(homeDir)

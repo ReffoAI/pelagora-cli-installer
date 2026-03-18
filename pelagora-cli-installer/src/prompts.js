@@ -22,11 +22,11 @@ export async function gatherAnswers() {
   const prompt = createPrompt();
   const answers = {};
 
-  console.log('\n  🔧 Reffo Beacon Setup\n');
+  console.log('\n  🔧 Pelagora Node Setup\n');
 
   // Project directory
-  answers.directory = await prompt.ask('  Project directory (default: reffo-beacon): ');
-  if (!answers.directory) answers.directory = 'reffo-beacon';
+  answers.directory = await prompt.ask('  Project directory (default: my-beacon): ');
+  if (!answers.directory) answers.directory = 'my-beacon';
 
   // Port
   answers.port = await prompt.ask('  HTTP port (default: 3000): ');
