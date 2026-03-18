@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **create-reffo-beacon** will be documented in this file.
+All notable changes to **pelagora-cli-installer** will be documented in this file.
 
 This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
@@ -14,7 +14,7 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 Initial release.
 
 ### Added
-- Interactive CLI scaffolding tool (`npx create-reffo-beacon`)
+- Interactive CLI scaffolding tool (`npx pelagora-cli-installer`)
 - Prompts for project directory, HTTP port, package manager, API key
 - API key format validation (`rfk_` prefix) with skip option
 - Generates `.env`, `package.json`, `.gitignore`, and `uploads/` directory
