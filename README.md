@@ -1,1 +1,1 @@
-# reffo-mcp-server
+# Pelagora CLI Installer
