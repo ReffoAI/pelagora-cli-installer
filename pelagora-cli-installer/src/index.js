@@ -16,20 +16,19 @@ try {
   process.exit(1);
 }
 
-// Warn if running from inside the installer repo itself
+// If running from inside the installer repo itself, move up to parent directory
 const cwd = process.cwd();
 if (
   fs.existsSync(path.join(cwd, 'src', 'installer.js')) &&
   fs.existsSync(path.join(cwd, 'src', 'prompts.js'))
 ) {
-  console.log('\n  ⚠ You are running the installer from inside its own repository.');
-  console.log('  The new project will be created in this directory.');
-  console.log('  Consider running from a different location instead:\n');
-  console.log('    cd ~ && node /path/to/pelagora-cli-installer/src/index.js');
-  console.log('    # or: npx pelagora-cli-installer\n');
+  const parentDir = path.dirname(cwd);
+  console.log('\n  ℹ Detected installer repo — creating project in parent directory.');
+  console.log(`  (${parentDir})\n`);
+  process.chdir(parentDir);
 }
 
-console.log('\n  ⚡ pelagora-cli-installer v0.1.4\n');
+console.log('\n  ⚡ pelagora-cli-installer v0.1.5\n');
 
 try {
   const answers = await gatherAnswers();

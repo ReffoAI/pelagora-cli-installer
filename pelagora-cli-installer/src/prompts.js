@@ -25,8 +25,8 @@ export async function gatherAnswers() {
   console.log('\n  🔧 Pelagora Node Setup\n');
 
   // Project directory
-  answers.directory = await prompt.ask('  Project directory (default: my-beacon): ');
-  if (!answers.directory) answers.directory = 'my-beacon';
+  answers.directory = await prompt.ask('  Project directory (default: my-pelagora-node): ');
+  if (!answers.directory) answers.directory = 'my-pelagora-node';
 
   // Port
   answers.port = await prompt.ask('  HTTP port (default: 3000): ');
