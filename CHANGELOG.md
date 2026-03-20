@@ -8,6 +8,12 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 
 Nothing yet.
 
+## [0.1.5] - 2026-03-05
+
+### Changed
+- Rename default beacon directory to `my-pelagora-node`
+- Auto-chdir out of installer repo after scaffolding
+
 ## [0.1.4] - 2026-03-01
 
 ### Fixed
