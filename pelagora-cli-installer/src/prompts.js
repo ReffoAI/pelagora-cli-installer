@@ -69,8 +69,8 @@ export async function gatherAnswers() {
     console.log('\n  Reffo.ai API URL');
     console.log('  For local development, point this to your running reffo-webapp.');
     console.log('  For production, use the default (https://reffo.ai).\n');
-    const apiUrl = await prompt.ask('  Reffo.ai URL (default: http://localhost:3000): ');
-    answers.apiUrl = apiUrl || 'http://localhost:3000';
+    const apiUrl = await prompt.ask('  Reffo.ai URL (default: https://reffo.ai): ');
+    answers.apiUrl = apiUrl || 'https://reffo.ai';
   } else {
     answers.apiUrl = '';
   }
