@@ -3,10 +3,10 @@ Reffo — Licensing Overview
 This repository is a monorepo containing multiple projects, each with its
 own license:
 
-  reffo-beacon          AGPL-3.0-only   See reffo-beacon/LICENSE
-  create-reffo-beacon   AGPL-3.0-only   See create-reffo-beacon/LICENSE
-  reffo-protocol        CC0-1.0         See reffo-protocol/LICENSE
-  reffo-webapp          Proprietary     No license granted
+  pelagora               AGPL-3.0-only   See pelagora/LICENSE
+  pelagora-cli-installer AGPL-3.0-only   See pelagora-cli-installer/LICENSE
+  pim-protocol           CC0-1.0         See pim-protocol/LICENSE
+  reffo-webapp           Proprietary     No license granted
 
 Unless otherwise noted, each project's license applies to all files within
 its directory. Files outside of a specific project directory (e.g. root
