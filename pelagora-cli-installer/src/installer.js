@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { AI_TOOL_SKILL_PATHS } from './prompts.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -74,6 +75,16 @@ export async function install(answers) {
   // Create uploads directory
   fs.mkdirSync(path.join(targetDir, 'uploads'), { recursive: true });
   console.log('  ✓ Created uploads/');
+
+  // Install Pelagora skill file for the chosen AI tool
+  const skillDir = AI_TOOL_SKILL_PATHS[answers.aiTool];
+  if (skillDir) {
+    const skillSrc = path.join(__dirname, 'templates', 'pelagora-skill.md');
+    const skillDest = path.join(targetDir, skillDir);
+    fs.mkdirSync(skillDest, { recursive: true });
+    fs.copyFileSync(skillSrc, path.join(skillDest, 'pelagora.md'));
+    console.log(`  ✓ Installed pelagora.md skill → ${skillDir}/pelagora.md`);
+  }
 
   // Install dependencies
   console.log(`\n  Installing dependencies with ${answers.packageManager}...\n`);

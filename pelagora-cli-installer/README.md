@@ -23,6 +23,7 @@ npx pelagora-cli-installer --name pelagora-beacon --port 8080 --pm npm
 | `--name <dir>` | Project directory | `pelagora-beacon` |
 | `--port <n>` | HTTP port | `3000` |
 | `--pm <npm\|yarn\|pnpm>` | Package manager | `npm` |
+| `--ai-tool <claude\|cursor\|windsurf\|none>` | AI tool (installs skill file) | `none` |
 | `--api-key <key>` | Reffo.ai API key | _(none)_ |
 | `--api-url <url>` | Reffo.ai API URL | `https://reffo.ai` |
 | `-y` / `--yes` | Accept all defaults | — |
