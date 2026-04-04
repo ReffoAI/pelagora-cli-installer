@@ -10,6 +10,23 @@ npx pelagora-cli-installer
 
 This downloads the latest version from npm and runs the interactive setup.
 
+### Non-interactive mode
+
+Pass CLI flags to skip the interactive prompts (useful for scripts, CI, and piped environments):
+
+```bash
+npx pelagora-cli-installer --name pelagora-beacon --port 8080 --pm npm
+```
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--name <dir>` | Project directory | `pelagora-beacon` |
+| `--port <n>` | HTTP port | `3000` |
+| `--pm <npm\|yarn\|pnpm>` | Package manager | `npm` |
+| `--api-key <key>` | Reffo.ai API key | _(none)_ |
+| `--api-url <url>` | Reffo.ai API URL | `https://reffo.ai` |
+| `-y` / `--yes` | Accept all defaults | — |
+
 ## Running from Source
 
 If you've cloned this repo to contribute or develop locally:
@@ -26,7 +43,7 @@ node src/index.js
 
 The installer prompts you for:
 
-- **Project directory** — where to create your node (default: `my-pelagora-node`)
+- **Project directory** — where to create your node (default: `pelagora-beacon`)
 - **HTTP port** — port for the beacon server (default: `3000`)
 - **Package manager** — npm, yarn, or pnpm
 - **Reffo.ai API key** — optional, for syncing items to [reffo.ai](https://reffo.ai)

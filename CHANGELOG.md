@@ -6,7 +6,8 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 
 ## [Unreleased]
 
-Nothing yet.
+### Fixed
+- Default Reffo.ai URL to `https://reffo.ai` instead of localhost
 
 ## [0.1.5] - 2026-03-05
 
