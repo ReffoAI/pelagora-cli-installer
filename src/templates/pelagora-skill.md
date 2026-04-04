@@ -1,10 +1,12 @@
 ---
 name: Pelagora Skill
 description: >
-  Pelagora developer skill for community devs. Use when the developer wants to:
+  Pelagora skill for beacon operators and community devs. Use when the user wants to:
+  list an item for sale, sell something, add a listing, manage inventory,
   join the Pelagora P2P network, check node health, browse what's new,
   build extensions/skills on top of Pelagora, or contribute to the open-source repos.
-  Triggers on: "pelagora", "beacon", "node", "P2P network", "MCP server",
+  Triggers on: "pelagora", "beacon", "list item", "sell", "add listing", "for sale",
+  "list for sale", "inventory", "node", "P2P network", "MCP server",
   "build a skill", "contribute", "what's new in pelagora".
 user_invocable: true
 ---
@@ -237,13 +239,13 @@ Help contributors match existing patterns:
 
 ## Commands
 
-### `/beacon-list-item`
+### `/pelagora`
 
 List an item for sale on the user's running Beacon. The user describes the item in natural language and the assistant converts it into the correct API calls.
 
 **Usage:**
 ```
-/beacon-list-item <natural language description of the item>
+/pelagora <natural language description of the item>
 ```
 
 **Behavior:**
@@ -316,7 +318,7 @@ List an item for sale on the user's running Beacon. The user describes the item 
 
 User:
 ```
-/beacon-list-item I have a used copy of the board game Balderdash, in like new condition. I'd sell it for $10.
+/pelagora I have a used copy of the board game Balderdash, in like new condition. I'd sell it for $10.
 ```
 
 Assistant runs:
