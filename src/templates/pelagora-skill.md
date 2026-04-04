@@ -1,5 +1,5 @@
 ---
-name: Pelagora Skill
+name: pelagora
 description: >
   Pelagora skill for beacon operators and community devs. Use when the user wants to:
   list an item for sale, sell something, add a listing, manage inventory,
@@ -250,7 +250,9 @@ List an item for sale on the user's running Beacon. The user describes the item 
 
 **Behavior:**
 
-1. **Parse the user's description** to extract:
+1. **Read the beacon port** from the `.env` file in the current directory (look for the `PORT=` line). Default to `3000` only if `.env` is missing or has no PORT set. Use this port for all API calls below.
+
+2. **Parse the user's description** to extract:
    - **name** — a concise product title
    - **description** — a short seller-written description (expand slightly on what the user said — mention condition, completeness, etc.)
    - **category** — one of the valid taxonomy categories (see below)
@@ -259,15 +261,15 @@ List an item for sale on the user's running Beacon. The user describes the item 
    - **listingStatus** — `for_sale` (default when a price is given), `willing_to_sell`, or `private`
    - **price** and **currency** — if the user mentions a price
 
-2. **Check the beacon is running** by hitting the health endpoint first:
+3. **Check the beacon is running** by hitting the health endpoint:
    ```bash
-   curl -s http://localhost:3000/health
+   curl -s http://localhost:<PORT>/health
    ```
    If the beacon is not reachable, tell the user to start it first.
 
-3. **Create the ref** (item):
+4. **Create the ref** (item):
    ```bash
-   curl -X POST http://localhost:3000/refs \
+   curl -X POST http://localhost:<PORT>/refs \
      -H "Content-Type: application/json" \
      -d '{
        "name": "<parsed name>",
@@ -279,18 +281,18 @@ List an item for sale on the user's running Beacon. The user describes the item 
      }'
    ```
 
-4. **Create the offer** (price) using the `id` from the ref response:
+5. **Create the offer** (price) using the `id` from the ref response:
    ```bash
-   curl -X POST http://localhost:3000/offers \
+   curl -X POST http://localhost:<PORT>/offers \
      -H "Content-Type: application/json" \
      -d '{
-       "refId": "<id from step 3>",
+       "refId": "<id from step 4>",
        "price": <price>,
        "priceCurrency": "USD"
      }'
    ```
 
-5. **Report the result** to the user, showing what was created and how to view it in the beacon UI.
+6. **Report the result** to the user, showing what was created and how to view it in the beacon UI.
 
 **Valid categories and subcategories:**
 
@@ -321,13 +323,13 @@ User:
 /pelagora I have a used copy of the board game Balderdash, in like new condition. I'd sell it for $10.
 ```
 
-Assistant runs:
+Assistant reads `.env` to find `PORT=8888`, then runs:
 ```bash
 # Check beacon health
-curl -s http://localhost:3000/health
+curl -s http://localhost:8888/health
 
 # Create the ref
-curl -X POST http://localhost:3000/refs \
+curl -X POST http://localhost:8888/refs \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Balderdash Board Game",
@@ -339,7 +341,7 @@ curl -X POST http://localhost:3000/refs \
   }'
 
 # Create the offer (using the id from the response above)
-curl -X POST http://localhost:3000/offers \
+curl -X POST http://localhost:8888/offers \
   -H "Content-Type: application/json" \
   -d '{
     "refId": "<id>",
@@ -355,7 +357,7 @@ Response to user:
   Condition: Like new
   Status:    For sale
 
-  View it at http://localhost:3000
+  View it at http://localhost:8888
 ```
 
 ---

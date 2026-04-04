@@ -76,13 +76,13 @@ export async function install(answers) {
   console.log('  ✓ Created uploads/');
 
   // Install Pelagora skill file for the chosen AI tool
-  const skillDir = AI_TOOL_SKILL_PATHS[answers.aiTool];
-  if (skillDir) {
+  const skillConfig = AI_TOOL_SKILL_PATHS[answers.aiTool];
+  if (skillConfig) {
     const skillSrc = path.join(__dirname, 'templates', 'pelagora-skill.md');
-    const skillDest = path.join(targetDir, skillDir);
+    const skillDest = path.join(targetDir, skillConfig.dir);
     fs.mkdirSync(skillDest, { recursive: true });
-    fs.copyFileSync(skillSrc, path.join(skillDest, 'pelagora.md'));
-    console.log(`  ✓ Installed pelagora.md skill → ${skillDir}/pelagora.md`);
+    fs.copyFileSync(skillSrc, path.join(skillDest, skillConfig.filename));
+    console.log(`  ✓ Installed Pelagora skill → ${skillConfig.dir}/${skillConfig.filename}`);
   }
 
   // Install dependencies
