@@ -1,13 +1,6 @@
-# reffo-inc workspace
-# Ignore everything by default
-*
-
-# Allow Claude Code config
-!.gitignore
-!.CLAUDE.md
-!.claude/
-!.claude/**
-
-# Allow workspace docs
-!docs/
-!docs/**
+node_modules/
+.DS_Store
+.env
+*.db
+*.db-wal
+*.db-shm

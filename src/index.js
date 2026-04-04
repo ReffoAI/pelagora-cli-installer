@@ -53,7 +53,7 @@ if (
   process.chdir(parentDir);
 }
 
-console.log('\n  ⚡ pelagora-cli-installer v0.1.6\n');
+console.log('\n  ⚡ pelagora-cli-installer v0.1.8\n');
 
 // ── Gather config (CLI flags or interactive prompts) ───────────────
 try {

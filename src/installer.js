@@ -3,27 +3,27 @@ import os from 'node:os';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { AI_TOOL_SKILL_PATHS } from './prompts.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function install(answers) {
-  // Expand ~ to home directory (path.resolve doesn't do this)
-  const dir = answers.directory.startsWith('~')
-    ? answers.directory.replace(/^~/, os.homedir())
-    : answers.directory;
-  // Use cwd for relative paths; fall back to homedir if cwd is gone
+  // Resolve the install location — expand ~ and resolve relative paths
+  const expandTilde = (p) => p.startsWith('~') ? p.replace(/^~/, os.homedir()) : p;
   let cwd;
   try {
     cwd = process.cwd();
   } catch {
     cwd = os.homedir();
   }
-  const targetDir = path.resolve(cwd, dir);
+
+  const baseDir = path.resolve(cwd, expandTilde(answers.location || '.'));
+  const targetDir = path.resolve(baseDir, answers.name);
   console.log(`\n  Creating beacon in ${targetDir}...\n`);
 
   // Create project directory
   if (fs.existsSync(targetDir)) {
-    console.log(`  ⚠ Directory "${answers.directory}" already exists.`);
+    console.log(`  ⚠ Directory "${answers.name}" already exists at ${baseDir}.`);
     console.log('  Files will be written into the existing directory.\n');
   } else {
     fs.mkdirSync(targetDir, { recursive: true });
@@ -75,6 +75,16 @@ export async function install(answers) {
   fs.mkdirSync(path.join(targetDir, 'uploads'), { recursive: true });
   console.log('  ✓ Created uploads/');
 
+  // Install Pelagora skill file for the chosen AI tool
+  const skillDir = AI_TOOL_SKILL_PATHS[answers.aiTool];
+  if (skillDir) {
+    const skillSrc = path.join(__dirname, 'templates', 'pelagora-skill.md');
+    const skillDest = path.join(targetDir, skillDir);
+    fs.mkdirSync(skillDest, { recursive: true });
+    fs.copyFileSync(skillSrc, path.join(skillDest, 'SKILL.md'));
+    console.log(`  ✓ Installed Pelagora skill → ${skillDir}/SKILL.md`);
+  }
+
   // Install dependencies
   console.log(`\n  Installing dependencies with ${answers.packageManager}...\n`);
   try {
@@ -87,7 +97,7 @@ export async function install(answers) {
     console.log('\n  ✓ Dependencies installed');
   } catch {
     console.log('\n  ⚠ Dependency installation failed. Run it manually:');
-    console.log(`    cd ${answers.directory} && ${answers.packageManager} install`);
+    console.log(`    cd ${targetDir} && ${answers.packageManager} install`);
   }
 
   // Print summary

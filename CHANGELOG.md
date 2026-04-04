@@ -6,6 +6,23 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.1.8] - 2026-04-03
+
+### Added
+- Node.js version check (>= 20) at startup
+- Beacon name picker (beacon-pelagora, kevin-beacon, or custom)
+- Install location prompt (current dir, home dir, or custom path)
+- Non-interactive CLI flags (`--name`, `--path`, `--port`, `--pm`, `--ai-tool`, `-y`)
+- AI tool prompt — installs Pelagora skill for Claude Code, Cursor, or Windsurf
+- Pelagora skill bundled as `SKILL.md` template with `/pelagora` command
+- Skill reads beacon port from `.env` instead of hardcoding `localhost:3000`
+
+### Changed
+- Flattened repo structure (removed nested `pelagora-cli-installer/` directory)
+- Default beacon name changed from `my-pelagora-node` to `beacon-pelagora`
+
 ### Fixed
 - Default Reffo.ai URL to `https://reffo.ai` instead of localhost
 
