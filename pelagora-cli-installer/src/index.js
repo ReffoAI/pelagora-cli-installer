@@ -2,11 +2,36 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { gatherAnswers } from './prompts.js';
+import { execSync } from 'node:child_process';
+import { gatherAnswers, parseCliFlags } from './prompts.js';
 import { install } from './installer.js';
 
-// Check that the current working directory exists (it won't if the user
-// is cd'd into a directory that was deleted).
+// ── Node.js check ──────────────────────────────────────────────────
+// Verify Node.js is on PATH and meets the minimum version requirement.
+function checkNode() {
+  try {
+    const raw = execSync('node --version', { encoding: 'utf-8' }).trim();
+    const match = raw.match(/^v(\d+)/);
+    if (!match) {
+      console.error(`\n  Error: Could not parse Node.js version ("${raw}").`);
+      process.exit(1);
+    }
+    const major = parseInt(match[1], 10);
+    if (major < 20) {
+      console.error(`\n  Error: Node.js >= 20 is required (found ${raw}).`);
+      console.error('  Please upgrade Node.js and try again.\n');
+      process.exit(1);
+    }
+  } catch {
+    console.error('\n  Error: Node.js is not installed or not on your PATH.');
+    console.error('  Install Node.js 20+ from https://nodejs.org and try again.\n');
+    process.exit(1);
+  }
+}
+
+checkNode();
+
+// ── CWD sanity check ───────────────────────────────────────────────
 try {
   process.cwd();
 } catch {
@@ -28,10 +53,12 @@ if (
   process.chdir(parentDir);
 }
 
-console.log('\n  ⚡ pelagora-cli-installer v0.1.5\n');
+console.log('\n  ⚡ pelagora-cli-installer v0.1.6\n');
 
+// ── Gather config (CLI flags or interactive prompts) ───────────────
 try {
-  const answers = await gatherAnswers();
+  const cliAnswers = parseCliFlags(process.argv.slice(2));
+  const answers = cliAnswers || await gatherAnswers();
   await install(answers);
 } catch (err) {
   if (err.code === 'ERR_USE_AFTER_CLOSE') {
