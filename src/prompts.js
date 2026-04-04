@@ -4,13 +4,13 @@ const DEFAULT_NAME = 'beacon-pelagora';
 const DEFAULT_PORT = 3000;
 const DEFAULT_PM   = 'npm';
 
-// Maps AI tool choice to where the skill file is installed.
-// Each entry has a `dir` (target directory) and `filename`.
+// Maps AI tool choice to the directory where SKILL.md is installed.
+// All tools use the same pelagora/SKILL.md structure.
 // null means "skip skill installation".
 export const AI_TOOL_SKILL_PATHS = {
-  claude:   { dir: '.claude/skills/pelagora', filename: 'SKILL.md' },
-  cursor:   { dir: '.cursor/rules',          filename: 'pelagora.md' },
-  windsurf: { dir: '.windsurf/rules',        filename: 'pelagora.md' },
+  claude:   '.claude/skills/pelagora',
+  cursor:   '.cursor/rules/pelagora',
+  windsurf: '.windsurf/rules/pelagora',
   none:     null,
 };
 
