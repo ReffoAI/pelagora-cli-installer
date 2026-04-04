@@ -20,7 +20,8 @@ npx pelagora-cli-installer --name pelagora-beacon --port 8080 --pm npm
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--name <dir>` | Project directory | `pelagora-beacon` |
+| `--name <dir>` | Beacon name | `beacon-pelagora` |
+| `--path <dir>` | Install location | current directory |
 | `--port <n>` | HTTP port | `3000` |
 | `--pm <npm\|yarn\|pnpm>` | Package manager | `npm` |
 | `--ai-tool <claude\|cursor\|windsurf\|none>` | AI tool (installs skill file) | `none` |

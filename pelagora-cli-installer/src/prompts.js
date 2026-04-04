@@ -15,7 +15,8 @@ export const AI_TOOL_SKILL_PATHS = {
 
 // ── CLI flag parser (non-interactive mode) ─────────────────────────
 // Supports:
-//   --name <dir>       Project directory  (default: beacon-pelagora)
+//   --name <dir>       Beacon name        (default: beacon-pelagora)
+//   --path <dir>       Install location   (default: current directory)
 //   --port <number>    HTTP port          (default: 3000)
 //   --pm <npm|yarn|pnpm>                  (default: npm)
 //   --ai-tool <claude|cursor|windsurf|none>  AI tool (default: none)
@@ -33,6 +34,7 @@ export function parseCliFlags(argv) {
     const arg = argv[i];
     if (arg === '-y' || arg === '--yes')       { flags.yes = true; continue; }
     if (arg === '--name'    && argv[i + 1])    { flags.name    = argv[++i]; continue; }
+    if (arg === '--path'    && argv[i + 1])    { flags.path    = argv[++i]; continue; }
     if (arg === '--port'    && argv[i + 1])    { flags.port    = argv[++i]; continue; }
     if (arg === '--pm'      && argv[i + 1])    { flags.pm      = argv[++i]; continue; }
     if (arg === '--ai-tool' && argv[i + 1])    { flags.aiTool  = argv[++i]; continue; }
@@ -46,7 +48,8 @@ export function parseCliFlags(argv) {
   const pm = (flags.pm || DEFAULT_PM).toLowerCase();
   const aiTool = (flags.aiTool || 'none').toLowerCase();
   return {
-    directory:      flags.name || DEFAULT_NAME,
+    name:           flags.name || DEFAULT_NAME,
+    location:       flags.path || '.',
     port:           parseInt(flags.port, 10) || DEFAULT_PORT,
     useNpm:         true,
     packageManager: ['npm', 'yarn', 'pnpm'].includes(pm) ? pm : DEFAULT_PM,
@@ -82,19 +85,34 @@ export async function gatherAnswers() {
 
   console.log('\n  🔧 Pelagora Beacon Setup\n');
 
-  // Project directory
+  // Beacon name
   console.log('  Choose a name for your beacon:\n');
   console.log('    1) beacon-pelagora');
   console.log('    2) kevin-beacon');
   console.log('    3) Custom name\n');
   const nameChoice = await prompt.ask('  Enter 1, 2, or 3 (default: 1): ');
   if (nameChoice === '2') {
-    answers.directory = 'kevin-beacon';
+    answers.name = 'kevin-beacon';
   } else if (nameChoice === '3') {
-    answers.directory = await prompt.ask('  Custom project directory: ');
-    if (!answers.directory) answers.directory = DEFAULT_NAME;
+    answers.name = await prompt.ask('  Custom beacon name: ');
+    if (!answers.name) answers.name = DEFAULT_NAME;
   } else {
-    answers.directory = 'beacon-pelagora';
+    answers.name = 'beacon-pelagora';
+  }
+
+  // Install location
+  console.log(`\n  Where should we create "${answers.name}"?\n`);
+  console.log(`    1) Current directory (${process.cwd()})`);
+  console.log('    2) Home directory (~)');
+  console.log('    3) Custom path\n');
+  const locChoice = await prompt.ask('  Enter 1, 2, or 3 (default: 1): ');
+  if (locChoice === '2') {
+    answers.location = '~';
+  } else if (locChoice === '3') {
+    answers.location = await prompt.ask('  Install path: ');
+    if (!answers.location) answers.location = '.';
+  } else {
+    answers.location = '.';
   }
 
   // Port
