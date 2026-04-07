@@ -125,7 +125,7 @@ Help the developer understand the extension points:
 Skills are the most common thing builders create. Walk them through:
 
 1. **Study the reference implementation:**
-   The `@reffo/skill-reverse-auction` package is the canonical example. It demonstrates:
+   The `@pelagora/skill-reverse-auction` package is the canonical example. It demonstrates:
    - Database migration, query helpers
    - Express routes mounted at `/skills/{id}/`
    - DHT message handlers for P2P communication
@@ -148,7 +148,7 @@ Skills are the most common thing builders create. Walk them through:
 3. **Point to the full guide:**
    Detailed skill-building documentation is at https://docs.pelagora.org/guides/building-skills
 
-4. **Package naming:** `@reffo/skill-<name>` for official skills, or their own npm scope for community skills.
+4. **Package naming:** `@pelagora/skill-<name>` for official skills, or their own npm scope for community skills.
 
 5. **Testing:** Link locally, test with two Beacons on different ports, verify DHT messaging works.
 
