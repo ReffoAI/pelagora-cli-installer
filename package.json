@@ -1,6 +1,6 @@
 {
   "name": "pelagora-cli-installer",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "type": "module",
   "description": "CLI installer for Pelagora — scaffold a self-hosted beacon server",
   "bin": {
