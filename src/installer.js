@@ -52,7 +52,7 @@ export async function install(answers) {
       dev: 'node node_modules/pelagora/dist/index.js',
     },
     dependencies: {
-      'pelagora': '^0.1.5',
+      'pelagora': '^0.3.0',
     },
     engines: {
       node: '>=20.0.0',
