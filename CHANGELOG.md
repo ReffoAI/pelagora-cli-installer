@@ -8,6 +8,22 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 
 Nothing yet.
 
+## [0.2.0] - 2026-04-07
+
+### Fixed
+- Rename `@reffo/skill-` to `@pelagora/skill-` in skill template
+- Update pelagora dependency constraint from `^0.1.5` to `^0.3.0`
+- Unify skill install path across all AI tools
+- Read port from `.env`, fix skill directory structure for Claude Code
+- Update skill triggers and rename command to `/pelagora`
+
+### Changed
+- Refactor: flatten nested directory structure
+- Refactor: unify skill install path across all AI tools
+
+### Added
+- Install location prompt and `/beacon-list-item` command
+
 ## [0.1.8] - 2026-04-03
 
 ### Added
