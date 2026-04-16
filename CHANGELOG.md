@@ -6,7 +6,8 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) and [Semant
 
 ## [Unreleased]
 
-Nothing yet.
+### Fixed
+- Update `pelagora` dependency constraint from `^0.1.5` to `^0.3.0` for compatibility with latest beacon releases
 
 ## [0.2.0] - 2026-04-07
 
