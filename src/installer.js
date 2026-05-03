@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { AI_TOOL_SKILL_PATHS } from './prompts.js';
+import { AI_TOOL_SKILL_PATHS, PELAGORA_SKILLS } from './prompts.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -75,14 +75,19 @@ export async function install(answers) {
   fs.mkdirSync(path.join(targetDir, 'uploads'), { recursive: true });
   console.log('  ✓ Created uploads/');
 
-  // Install Pelagora skill file for the chosen AI tool
-  const skillDir = AI_TOOL_SKILL_PATHS[answers.aiTool];
-  if (skillDir) {
-    const skillSrc = path.join(__dirname, 'templates', 'pelagora-skill.md');
-    const skillDest = path.join(targetDir, skillDir);
-    fs.mkdirSync(skillDest, { recursive: true });
-    fs.copyFileSync(skillSrc, path.join(skillDest, 'SKILL.md'));
-    console.log(`  ✓ Installed Pelagora skill → ${skillDir}/SKILL.md`);
+  // Install Pelagora skill files for the chosen AI tool. Each skill goes
+  // into its own folder (Claude convention) so each is registered as a
+  // separate skill / slash command. The same layout works for Cursor and
+  // Windsurf, which scan their rules base for nested .md files.
+  const skillBase = AI_TOOL_SKILL_PATHS[answers.aiTool];
+  if (skillBase) {
+    for (const skill of PELAGORA_SKILLS) {
+      const skillSrc = path.join(__dirname, 'templates', skill.template);
+      const skillDestDir = path.join(targetDir, skillBase, skill.name);
+      fs.mkdirSync(skillDestDir, { recursive: true });
+      fs.copyFileSync(skillSrc, path.join(skillDestDir, 'SKILL.md'));
+      console.log(`  ✓ Installed skill → ${skillBase}/${skill.name}/SKILL.md`);
+    }
   }
 
   // Install dependencies
