@@ -4,15 +4,30 @@ const DEFAULT_NAME = 'beacon-pelagora';
 const DEFAULT_PORT = 3000;
 const DEFAULT_PM   = 'npm';
 
-// Maps AI tool choice to the directory where SKILL.md is installed.
-// All tools use the same pelagora/SKILL.md structure.
-// null means "skip skill installation".
+// Maps AI tool choice to the *base directory* where Pelagora skills are
+// installed. The installer expands this base into a per-skill folder
+// (Claude convention: `<base>/<skill-name>/SKILL.md`) for every entry in
+// PELAGORA_SKILLS. null means "skip skill installation".
 export const AI_TOOL_SKILL_PATHS = {
-  claude:   '.claude/skills/pelagora',
-  cursor:   '.cursor/rules/pelagora',
-  windsurf: '.windsurf/rules/pelagora',
+  claude:   '.claude/skills',
+  cursor:   '.cursor/rules',
+  windsurf: '.windsurf/rules',
   none:     null,
 };
+
+// Skill templates bundled with the installer. Each entry maps a template
+// filename in src/templates/ to the on-disk skill name (which becomes the
+// folder name and, for invocable skills, the slash command).
+//
+// The first entry is the context-only 'pelagora' skill (auto-loaded by
+// frontmatter triggers, not user-invocable). The rest are slash commands
+// the user can call directly.
+export const PELAGORA_SKILLS = [
+  { template: 'pelagora.md',         name: 'pelagora' },
+  { template: 'beacon-list-item.md', name: 'beacon-list-item' },
+  { template: 'beacon-status.md',    name: 'beacon-status' },
+  { template: 'pelagora-help.md',    name: 'pelagora-help' },
+];
 
 // ── CLI flag parser (non-interactive mode) ─────────────────────────
 // Supports:

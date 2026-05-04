@@ -1,14 +1,13 @@
 ---
 name: pelagora
 description: >
-  Pelagora skill for beacon operators and community devs. Use when the user wants to:
-  list an item for sale, sell something, add a listing, manage inventory,
-  join the Pelagora P2P network, check node health, browse what's new,
-  build extensions/skills on top of Pelagora, or contribute to the open-source repos.
-  Triggers on: "pelagora", "beacon", "list item", "sell", "add listing", "for sale",
-  "list for sale", "inventory", "node", "P2P network", "MCP server",
-  "build a skill", "contribute", "what's new in pelagora".
-user_invocable: true
+  Background context for working with Pelagora — the open peer-to-peer
+  commerce network — and the local Beacon node. Auto-loads when the
+  developer mentions: "pelagora", "beacon", "node", "P2P network",
+  "MCP server", "build a skill", "contribute", "what's new in pelagora".
+  This skill is context only. The user-invocable commands are separate
+  skills: /beacon-list-item, /beacon-status, /pelagora-help.
+user_invocable: false
 ---
 
 # Pelagora Developer Skill
@@ -237,128 +236,22 @@ Help contributors match existing patterns:
 
 ---
 
-## Commands
+## Available slash commands
 
-### `/pelagora`
+These ship as separate skills — each has its own SKILL.md with full
+behavior. Point the user to them when their intent matches:
 
-List an item for sale on the user's running Beacon. The user describes the item in natural language and the assistant converts it into the correct API calls.
+- **`/beacon-list-item <description>`** — list an item for sale on the
+  local Beacon. Parses natural-language descriptions and posts to
+  `/refs` + `/offers`.
+- **`/beacon-status`** — health-check the local Beacon. Returns sync
+  state, port, peer count, and recent activity.
+- **`/pelagora-help`** — discoverability. Lists every Pelagora /
+  Beacon command with one-liners and quick-start workflows.
 
-**Usage:**
-```
-/pelagora <natural language description of the item>
-```
-
-**Behavior:**
-
-1. **Read the beacon port** from the `.env` file in the current directory (look for the `PORT=` line). Default to `3000` only if `.env` is missing or has no PORT set. Use this port for all API calls below.
-
-2. **Parse the user's description** to extract:
-   - **name** — a concise product title
-   - **description** — a short seller-written description (expand slightly on what the user said — mention condition, completeness, etc.)
-   - **category** — one of the valid taxonomy categories (see below)
-   - **subcategory** — a valid subcategory within that category
-   - **condition** — infer from the description (e.g., "like new" → `like_new`, "used" → `good`, "sealed" → `new`)
-   - **listingStatus** — `for_sale` (default when a price is given), `willing_to_sell`, or `private`
-   - **price** and **currency** — if the user mentions a price
-
-3. **Check the beacon is running** by hitting the health endpoint:
-   ```bash
-   curl -s http://localhost:<PORT>/health
-   ```
-   If the beacon is not reachable, tell the user to start it first.
-
-4. **Create the ref** (item):
-   ```bash
-   curl -X POST http://localhost:<PORT>/refs \
-     -H "Content-Type: application/json" \
-     -d '{
-       "name": "<parsed name>",
-       "description": "<parsed description>",
-       "category": "<category>",
-       "subcategory": "<subcategory>",
-       "condition": "<condition>",
-       "listingStatus": "for_sale"
-     }'
-   ```
-
-5. **Create the offer** (price) using the `id` from the ref response:
-   ```bash
-   curl -X POST http://localhost:<PORT>/offers \
-     -H "Content-Type: application/json" \
-     -d '{
-       "refId": "<id from step 4>",
-       "price": <price>,
-       "priceCurrency": "USD"
-     }'
-   ```
-
-6. **Report the result** to the user, showing what was created and how to view it in the beacon UI.
-
-**Valid categories and subcategories:**
-
-| Category | Subcategories |
-|----------|--------------|
-| Electronics | Phones & Tablets, Computers & Laptops, Audio & Headphones, Cameras & Photography, TV & Video, Gaming, Components & Parts, Accessories |
-| Music | Guitars, Bass, Drums & Percussion, Keyboards & Pianos, Amplifiers, Effects & Pedals, Pro Audio, Accessories |
-| Home & Garden | Furniture, Kitchen & Dining, Tools & Hardware, Appliances, Outdoor & Garden, Lighting, Decor, Storage & Organization |
-| Clothing & Accessories | Mens, Womens, Kids, Shoes, Bags & Wallets, Activewear, Vintage |
-| Jewelry & Watches | Fine Jewelry, Fashion Jewelry, Watches, Loose Stones & Beads |
-| Sports | Cycling, Fitness & Gym, Water Sports, Winter Sports, Team Sports, Outdoor & Camping, Running, Racquet Sports |
-| Books & Media | Books, Vinyl & Records, CDs & DVDs, Video Games, Magazines, Textbooks, Comics & Graphic Novels, Audiobooks |
-| Vehicles | Cars, Motorcycles, Bicycles, Trucks & Vans, Boats, Parts & Accessories, Trailers, Electric Vehicles |
-| Real Estate | Apartment, Condo, Townhome, Manufactured, Single Family, Multi-Family |
-| Collectibles | Antiques, Art, Coins & Currency, Trading Cards, Memorabilia, Stamps, Vintage Electronics |
-| Health & Beauty | Skincare, Makeup, Hair Care, Fragrances, Wellness & Supplements |
-| Toys & Hobbies | Action Figures & Dolls, Building Sets, Board Games & Puzzles, RC & Models, Craft Supplies |
-| Baby & Kids | Strollers & Car Seats, Clothing, Toys, Furniture & Gear, Feeding & Nursing |
-| Pet Supplies | Dogs, Cats, Fish & Aquariums, Small Animals & Birds |
-| Other | General, Services, Free Stuff, Wanted |
-
-**Valid listing statuses:** `private`, `for_sale`, `willing_to_sell`, `for_rent`
-
-**Example:**
-
-User:
-```
-/pelagora I have a used copy of the board game Balderdash, in like new condition. I'd sell it for $10.
-```
-
-Assistant reads `.env` to find `PORT=8888`, then runs:
-```bash
-# Check beacon health
-curl -s http://localhost:8888/health
-
-# Create the ref
-curl -X POST http://localhost:8888/refs \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Balderdash Board Game",
-    "description": "Used copy in like-new condition. All pieces included.",
-    "category": "Toys & Hobbies",
-    "subcategory": "Board Games & Puzzles",
-    "condition": "like_new",
-    "listingStatus": "for_sale"
-  }'
-
-# Create the offer (using the id from the response above)
-curl -X POST http://localhost:8888/offers \
-  -H "Content-Type: application/json" \
-  -d '{
-    "refId": "<id>",
-    "price": 10,
-    "priceCurrency": "USD"
-  }'
-```
-
-Response to user:
-```
-✓ Listed "Balderdash Board Game" for $10.00
-  Category:  Toys & Hobbies → Board Games & Puzzles
-  Condition: Like new
-  Status:    For sale
-
-  View it at http://localhost:8888
-```
+If a developer is trying to do something that one of these commands
+covers, suggest the command. Otherwise rely on the rest of this
+context skill to ground your answers.
 
 ---
 
